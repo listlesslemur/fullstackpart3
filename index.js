@@ -26,7 +26,6 @@ let persons = [
     }
 ]
 
-
 const generateId = () => {
     const maxId = persons.length > 0
     ? Math.max(...persons.map(n => Number(n.id)))
@@ -44,6 +43,7 @@ const requestLogger = (request, response, next) => {
 }
 
 app.use(cors())
+app.use(express.static('dist'))
 
 morgan.token('body', request => {
     return JSON.stringify(request.body)
