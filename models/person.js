@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
+const dotenv = require('dotenv')
+dotenv.config()
 
 mongoose.get('strictQuery', false)
 
 const url = process.env.MONGODB_URI
-
-console.log('connecting to', url)
 
 mongoose.connect(url)
     .then(result => {

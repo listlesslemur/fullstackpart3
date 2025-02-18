@@ -1,12 +1,11 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const dotenv = require('dotenv')
-dotenv.config()
 const app = express()
 const name = process.argv[2]
 const number = process.argv[3]
 const Person = require('./models/person')
+const person = require('./models/person')
 
 app.use(cors())
 app.use(express.static('dist'))
@@ -24,14 +23,18 @@ app.get('/api/persons', (request,response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = request.params.id
-    const person = persons.find(person => person.id === id)
-
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    Person.findById(request.params.id)
+        .then(person => {
+            if (person) {
+                response.json(person)
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            response.status(400).send({ error: 'malformed id'})
+        })
 })
 
 app.get('/info', (request, response) => {
@@ -44,42 +47,28 @@ app.get('/info', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request,response) => {
-    const id = request.params.id
-    persons = persons.filter(person => person.id !== id)
-
-    response.status(204).end()
+    
 })
 
 app.post('/api/persons', (request,response) => {
-    const body = request.body 
-
-    if (!body.name) {
-        return response.status(400).json({
-            error: 'name missing'
-        })
+    if (body.name === undefined) {
+        return response.status(400).json({error: 'name missing' })
     }
 
-    if (!body.number) {
-        return response.status(400).json({
-            error: 'number missing'
-        })
-    }
-
-    if (persons.find(p => p.name === body.name)) {
-        return response.status(400).json({
-            error: `${body.name} already exists`
-        })
-    }
-
-    const person = {
-        id: generateId(),
+    const person = new Person({
         name: body.name,
         number: body.number
-    }
+    })
 
-    persons = persons.concat(person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 
-    response.json(person)
+    // if (persons.find(p => p.name === body.name)) {
+    //     return response.status(400).json({
+    //         error: `${body.name} already exists`
+    //     })
+    // }
 })
 
 const unknownEndpoint = (request, response) => {
