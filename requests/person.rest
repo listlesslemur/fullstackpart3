@@ -1,0 +1,24 @@
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Daniel San",
+    "number": "39-222-222-2222"
+}
+
+###
+GET http://localhost:3001/api/persons
+
+###
+GET http://localhost:3001/api/persons/67b50e2ddc5dc81c9c464ea3
+
+###
+DELETE http://localhost:3001/api/persons/67b50e2ddc5dc81c9c464ea3
+
+###
+PUT http://localhost:3001/api/persons/67b5112a4ab7d256b18902c3 
+Content-Type: application/json
+
+{
+    "number": "123-333"
+}
