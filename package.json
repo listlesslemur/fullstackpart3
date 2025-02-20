@@ -7,6 +7,10 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@stylistic/eslint-plugin-js": "^4.0.1",
+    "eslint": "^9.20.1",
+    "globals": "^15.15.0",
     "nodemon": "^3.1.9"
   },
   "name": "phonebook",
@@ -15,7 +19,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specificed\" && exit 1"
+    "test": "echo \"Error: no test specificed\" && exit 1",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
